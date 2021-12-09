@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: 'https://www.sibberhuuske.nl/wp-content/uploads/2016/10/default-avatar.png'
+        default: 'https://res.cloudinary.com/siemens2021/image/upload/v1639049280/mad-scientist_1_av3tse.png'
     },
     password: {
         type: String,

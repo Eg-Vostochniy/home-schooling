@@ -1,3 +1,4 @@
+import { Request } from "express"
 import { Document } from "mongoose"
 
 export interface IUser extends Document {
@@ -30,4 +31,7 @@ export interface IDecodedToken {
     newUser?: INewUser
     iat: number
     exp: number
+}
+export interface IReqAuth extends Request {
+    user?: IUser
 }

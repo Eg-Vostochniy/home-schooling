@@ -1,9 +1,9 @@
-import { IDecodedToken } from './../config/Interface';
-import { NextFunction, Request, Response } from "express"
+import { IDecodedToken, IReqAuth } from './../config/Interface';
+import { NextFunction, Response } from "express"
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel'
 
-export const auth = async (req: Request, res: Response, next: NextFunction) => {
+export const auth = async (req: IReqAuth, res: Response, next: NextFunction) => {
     try {
         const token = req.header('Authorization')
         if (!token) return res.status(400).json({ msg: 'Invalid Authentication' })

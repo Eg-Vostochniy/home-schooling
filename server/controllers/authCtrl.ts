@@ -9,9 +9,8 @@ export const authCtrl = {
     register: async (req: Request, res: Response) => {
         try {
             const { username, fullname, email, password, cf_password, role }: IRegUser = req.body
-            const lc_username = username.toLowerCase().replace(/ /g, '')
 
-            const user_name = await User.findOne({ username: lc_username })
+            const user_name = await User.findOne({ username })
             if (user_name) return res.status(400).json({ msg: 'This user name already exist' })
 
             if (password !== cf_password) return res.status(400).json({ msg: 'Passwords missmatch' })
@@ -22,7 +21,7 @@ export const authCtrl = {
             const hash_pass = await bcrypt.hash(password, 12)
 
             const newUser = new User({
-                username: lc_username,
+                username,
                 fullname,
                 email,
                 role,
@@ -106,6 +105,7 @@ export const authCtrl = {
                 const token = generateAccessToken({ id: user.id })
 
                 res.json({
+                    msg: 'Login success',
                     token,
                     user
                 })

@@ -1,0 +1,28 @@
+.alert{
+    position: absolute;
+    top: 13px;
+    right: 13px;
+    min-height: 60px;
+    min-width: 150px;
+    z-index: 10;
+    font-weight: normal;
+    font-size: 15px;
+    border-radius: 3px;
+    border: 2px dashed rgba(118, 118, 118, 0.494);
+    color: white;
+    padding: 6px 10px 10px 13px;
+}
+.alert div:nth-child(1){
+    display: flex;
+    justify-content: right;
+    margin-bottom: 4px;
+}
+.alert span{
+    cursor: pointer;
+}
+.error{
+    background: red;
+}
+.success{
+    background: rgba(14, 140, 14, 0.748);
+}
