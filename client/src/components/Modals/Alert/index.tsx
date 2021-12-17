@@ -12,7 +12,7 @@ export const Alert: React.FC = () => {
             {
                 error ?
                     <AlertContent content={error} classNm='error' /> :
-                    <AlertContent content={success} classNm='success' />
+                    <AlertContent content={success as string} classNm='success' />
             }
 
         </div>

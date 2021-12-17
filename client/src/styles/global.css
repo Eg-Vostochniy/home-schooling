@@ -15,7 +15,7 @@ input{
     outline: none;
 }
 .App {
-    max-width: 1000px;
+    max-width: 1200px;
     width: 100%;
     margin: auto;
     min-height: 100vh;
@@ -31,3 +31,5 @@ input{
 @import url('./navbar.css');
 @import url('./home.css');
 @import url('./alert.css');
+@import url('./avatar.css');
+@import url('./popup.css');

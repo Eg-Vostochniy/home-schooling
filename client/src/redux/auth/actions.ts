@@ -1,5 +1,5 @@
 import { IAuth, IRegistData } from './../../models/IAuth'
-import { ReturnActionsTypes, ReturnThunksTypes } from './../index'
+import { ReturnActionsTypes } from './../index'
 import { Dispatch } from 'redux'
 import { ILoginData } from '../../models/IAuth'
 import { AUTH } from "./types"

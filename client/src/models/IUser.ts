@@ -11,3 +11,11 @@ export interface IUser extends ICommon {
     avatar: string
     role: string
 }
+export interface IStudent {
+    _id: string
+    avatar: string
+    username: string
+    fullname: string
+}
+export type SearchedUsers = IStudent[]
+export type SearchedUser = IStudent

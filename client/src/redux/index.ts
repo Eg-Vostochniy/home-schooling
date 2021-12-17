@@ -1,3 +1,4 @@
+import { userReducer } from './user/reducer';
 import { alertReducer } from './alert/reducer';
 import { authReducer } from './auth/reducer';
 import { Action, applyMiddleware, combineReducers, createStore } from "redux"
@@ -6,7 +7,8 @@ import thunk, { ThunkAction } from "redux-thunk"
 
 const rootReducer = combineReducers({
     authReducer,
-    alertReducer
+    alertReducer,
+    userReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))

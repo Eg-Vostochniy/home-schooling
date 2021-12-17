@@ -1,18 +1,16 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { FormSubmit, InputChange } from "../App"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { valid } from "../utils/valid"
 
-export const Login = () => {
+const Login = () => {
     const [lgValue, setValue] = useState({
         email: '',
         password: ''
     })
     const [inputErrs, setInputErrs] = useState<string[]>([])
-
     const [isShowed, setIsShowed] = useState(false)
-    const navigate = useNavigate()
 
     const { login } = useAppDispatch()
 
@@ -33,8 +31,7 @@ export const Login = () => {
             setInputErrs(errs)
         }
         else {
-            await login(lgValue)
-            navigate('/')
+            login(lgValue)
         }
     }
 
@@ -85,3 +82,4 @@ export const Login = () => {
     )
 }
 
+export default Login

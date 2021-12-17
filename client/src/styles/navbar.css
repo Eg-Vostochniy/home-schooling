@@ -65,3 +65,13 @@
     content: url('../img/Свернуть.svg');
     margin-right: 5px;
 }
+.navbar .primary_nav .auth_user{
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    margin-bottom: 25px;
+}
+.navbar .primary_nav .auth_user span{
+    margin-left: 6px;
+}
+

@@ -7,7 +7,7 @@ export interface IUser extends Document {
     email: string
     avatar: string
     password: string
-    role: 'teacher' | 'student'
+    role: string
     _doc: object
 }
 export interface INewUser {
@@ -20,7 +20,7 @@ export interface IRegUser {
     email: string
     password: string
     cf_password: string
-    role: 'teacher' | 'student'
+    role: string
 }
 export interface ILogUser {
     email: string

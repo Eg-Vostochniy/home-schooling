@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { FormSubmit, InputChange } from "../App"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { valid } from "../utils/valid"
 
-export const Register = () => {
+const Register = () => {
     const [lgValue, setValue] = useState({
         username: '',
         fullname: '',
@@ -18,7 +18,6 @@ export const Register = () => {
     const [isShowed, setIsShowed] = useState(false)
 
     const { register } = useAppDispatch()
-    const navigate = useNavigate()
 
     const handleChangeInput = (e: InputChange) => {
         const { value, name } = e.target
@@ -32,7 +31,7 @@ export const Register = () => {
         setIsShowed(!isShowed)
     }
 
-    const handleSubmit = async (e: FormSubmit) => {
+    const handleSubmit = (e: FormSubmit) => {
         e.preventDefault()
         const { errs, errsLength } = valid.register(lgValue)
 
@@ -40,9 +39,7 @@ export const Register = () => {
             setInputErrs(errs)
         }
         else {
-            await register(lgValue)
-            navigate('/home')
-
+            register(lgValue)
         }
     }
 
@@ -143,4 +140,6 @@ export const Register = () => {
         </div>
     )
 }
+
+export default Register
 

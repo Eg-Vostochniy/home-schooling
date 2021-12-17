@@ -85,19 +85,15 @@
     margin-right: 5px;
     border-radius: 50px;
 }
-.home .add_student{
-    width: 100%;
-    border: 3px dashed #AEAEAE;
-    border-radius: 5px;
+.home .adding_info button{
+    background: transparent;
     font-style: normal;
     font-weight: bold;
     font-size: 20px;
-    line-height: 27px;
     color: #AEAEAE;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 3px dashed #AEAEAE;
+    border-radius: 5px;
 }
 .home .add_student::before{
     content: '+';

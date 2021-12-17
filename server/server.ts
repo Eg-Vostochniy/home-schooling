@@ -14,6 +14,7 @@ app.use(cookieParser())
 app.use(urlencoded())
 
 app.use('/api', routes.authRouter)
+app.use('/api', routes.userRouter)
 
 require('./config/database')
 
