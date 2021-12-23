@@ -1,19 +1,24 @@
+import { useAppSelector } from '../../hooks/useAppSelector'
 import calendar from '../../img/calendar 1.png'
 import { AddUserPopup } from "./AddUserModal/AddUserPopup"
+import { Content } from '././Content/index'
 
-export const HomeContent: React.FC = () => {
-    const users = []
+type Props = {
+    content: string
+    btnContent: string
+}
+
+export const HomeContent: React.FC<Props> = ({ content, btnContent }) => {
+    const { roleUsers } = useAppSelector(state => state.authReducer.user)
     return (
         <div className='home_content'>
-            <button>dsfds</button>
+            <Content />
             {
-                users.length === 0 && (
+                roleUsers.length === 0 && (
                     <div className='timetable_stub'>
                         <img src={calendar} alt='calendar' />
-                        <div className='text'>
-                            Для планирования уроков в расписании сначала добавьте учеников
-                        </div>
-                        <AddUserPopup>Добавить ученика</AddUserPopup>
+                        <div className='text'>{content}</div>
+                        <AddUserPopup>{btnContent}</AddUserPopup>
                     </div>
                 )
             }

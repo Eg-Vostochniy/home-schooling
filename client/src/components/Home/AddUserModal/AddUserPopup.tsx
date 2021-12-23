@@ -8,6 +8,7 @@ export const AddUserPopup: React.FC = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false)
 
     const { searchedUsers } = useAppSelector(state => state.userReducer)
+    const { role } = useAppSelector(state => state.authReducer.user)
 
     const handleClose = useCallback(() => {
         setIsOpen(false)
@@ -22,8 +23,8 @@ export const AddUserPopup: React.FC = ({ children }) => {
                 isOpen && (
                     <Popup
                         onClose={handleClose}
-                        popupName='Выберите, кого добавить в ученики'
-                        popupButton='Добавить ученика'
+                        popupName={role === 'student' ? 'Выберите учителя' : 'Выберите ученика'}
+                        popupButton={role === 'student' ? 'Добавить учителя' : 'Добавить ученика'}
                         searchedUsers={searchedUsers}
                     >
                         <SearchStudents addedSearchedUsers={searchedUsers} />

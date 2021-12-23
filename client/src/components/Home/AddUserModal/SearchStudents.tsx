@@ -2,33 +2,39 @@ import { useState } from "react"
 import { useAppDispatch } from "../../../hooks/useAppDispatch"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import { useSearch } from "../../../hooks/useSearch"
-import { SearchedUsers } from "../../../models/IUser"
+import { IResUser } from "../../../models/IUser"
 import { Search } from "../../Search/Search"
 
-export const SearchStudents: React.FC<{ addedSearchedUsers: SearchedUsers }> = ({ addedSearchedUsers }) => {
+type Props = {
+    addedSearchedUsers: IResUser[]
+}
+
+export const SearchStudents: React.FC<Props> = ({ addedSearchedUsers }) => {
     const [searchValue, setSearchValue] = useState('')
 
-    const { getStudents } = useAppDispatch()
+    const { getUsers } = useAppDispatch()
 
     const { isSearched, isLoad, handleSearch } = useSearch({
-        getUsers: getStudents,
+        search: getUsers,
         searchValue
     })
 
-    const students = useAppSelector(state => state.userReducer.students)
+    const { users } = useAppSelector(state => state.userReducer)
+    const { setSearchedUsers } = useAppDispatch()
 
     return (
         <div className='search'>
             <Search
-                inputContent='Введите имя ученика'
-                labelName='Имя ученика'
+                inputContent='Введите имя'
+                labelName='Имя'
                 isSearched={isSearched}
                 handleSearch={handleSearch}
                 isLoad={isLoad}
                 searchValue={searchValue}
                 setSearchValue={setSearchValue}
-                searched_users={students}
+                searched_users={users}
                 addedSearchedUsers={addedSearchedUsers}
+                setSearchedUsers={setSearchedUsers}
             />
         </div>
     )

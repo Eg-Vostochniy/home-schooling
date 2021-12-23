@@ -31,17 +31,26 @@
     font-size: 15px;
     line-height: 20px;
 }
-.home .adding_menu :nth-child(1){
+.home .adding_menu span{
+    cursor: pointer;
+}
+.home .adding_menu .add_user{
     color: #235390;
+}
+.home .adding_menu .add_group{
+    color: #C200AF;
+}
+.home .adding_menu .add_user.active{
     border-bottom: 2px solid #235390;
 }
-.home .adding_menu :nth-child(2){
-    color: #C200AF;
+.home .adding_menu .add_group.active{
     border-bottom: 2px solid #C200AF;
 }
 .home .adding_info{
     display: grid;
     grid-template-columns: 2fr 6fr;
+    align-items: center;
+    min-height: 100px;
 }
 .home .adding_info .adding_info-buttons{
     display: grid;
@@ -85,7 +94,8 @@
     margin-right: 5px;
     border-radius: 50px;
 }
-.home .adding_info button{
+.home .adding_info button,
+.home .adding_info .group_adding{
     background: transparent;
     font-style: normal;
     font-weight: bold;
@@ -94,6 +104,8 @@
     cursor: pointer;
     border: 3px dashed #AEAEAE;
     border-radius: 5px;
+    padding: 20px 0 20px 0;
+    text-align: center;
 }
 .home .add_student::before{
     content: '+';
@@ -111,11 +123,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.775);
+    background: rgba(255, 255, 255, 0.844);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: start;
+    padding-top: 120px;
 }
 .home_content .timetable_stub .text {
     font-style: normal;
@@ -146,4 +159,29 @@
     content: url('../img/Add\ pupil\ button\ icon.svg');
     margin-right: 5px;
     transform: translateY(10%);
+}
+.home .adding_info .added_users{
+    display: flex;
+    align-items: top;
+    justify-content: left;
+}
+.home .adding_info .added_users .added_user-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: top;
+    text-align: center;
+    padding: 5px;
+    margin: 5px;
+    font-size: 14px;
+    position: relative;
+    min-width: 100px;
+    max-width: 100px;
+}
+.home .adding_info .added_users .added_user-block span:nth-child(1){
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    cursor: pointer;
+    color: #FF2500;
 }

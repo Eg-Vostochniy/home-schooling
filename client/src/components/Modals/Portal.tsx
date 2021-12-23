@@ -6,8 +6,10 @@ export const Portal: React.FC = ({ children }) => {
 
     useEffect(() => {
         document.body.appendChild(container)
+        document.body.style.overflow = 'hidden'
         return () => {
             document.body.removeChild(container)
+            document.body.style.overflow = 'unset'
         }
         //eslint-disable-next-line
     }, [])

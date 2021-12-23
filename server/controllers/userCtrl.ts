@@ -1,35 +1,98 @@
-import { Request, Response } from "express"
+import { IReqAuth } from './../config/Interface'
+import { Response } from "express"
 import Users from "../models/userModel"
 
 export const userCtrl = {
-    getStudents: async (req: Request, res: Response) => {
+    getUsers: async (req: IReqAuth, res: Response) => {
         try {
-            const { user }: any = req
-            if (user.role !== 'teacher') return res.status(400).json({ msg: 'You are not a teacher' })
+            const { user } = req
+            if (user) {
+                if (!req.query.username) return res.status(400).json({ msg: 'Add query point' })
 
-            if (!req.query.username) return res.status(400).json({ msg: 'Add query point' })
-            const students = await Users.find({
-                username: { $regex: req.query.username } as any,
-                role: 'student'
-            }).limit(10).select('avatar username fullname')
+                if (user.role === 'teacher') {
+                    const users = await Users.find({
+                        username: { $regex: req.query.username } as any,
+                        role: 'student'
+                    }).limit(10).select('avatar username fullname')
+                    return res.json(users)
+                }
 
-            return res.json(students)
+                if (user.role === 'student') {
+                    const users = await Users.find({
+                        username: { $regex: req.query.username } as any,
+                        role: 'teacher'
+                    }).limit(10).select('avatar username fullname')
+                    return res.json(users)
+                }
+            }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })
         }
     },
-    addNewStudents: async (req: Request, res: Response) => {
+    addNewUsers: async (req: IReqAuth, res: Response) => {
         try {
-            const { users } = req.body
-            const { user }: any = req
+            const { user } = req
+            if (user) {
+                if (user.roleUsers.length > 0 &&
+                    user.roleUsers.find(role => role === req.body.id)
+                )
+                    return res.status(300).json({
+                        msg: 'User already added'
+                    })
 
-            await Users.findOneAndUpdate({ _id: user._id }, {
-                $push: { students: users }
-            }, { new: true }
-            )
+                const authUser = await Users.findOneAndUpdate({ _id: user._id }, {
+                    $push: { roleUsers: req.body.id }
+                }, { new: true })
 
+                await Users.findOneAndUpdate({ _id: req.body.id }, {
+                    $push: { roleUsers: user._id }
+                }, { new: true })
+
+                return res.json({
+                    msg: 'User added',
+                    user: authUser
+                })
+            }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })
         }
-    }
+    },
+    deleteUser: async (req: IReqAuth, res: Response) => {
+        try {
+            const { id } = req.query
+            const { user } = req
+            if (user) {
+                const usrAuth = await Users.findById(user._id)
+                if (usrAuth?.roleUsers.length === 0)
+                    return res.status(400).json({ msg: 'User does not exist' })
+
+                const roleUser = await Users.findById(id)
+                if (roleUser?.roleUsers.length === 0)
+                    return res.status(400).json({ msg: 'User does not exist' })
+
+                await usrAuth?.update({ $pull: { roleUsers: id } })
+                await roleUser?.update({ $pull: { roleUsers: user._id } })
+                return res.json({ msg: 'User deleted' })
+            }
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+    addNewGroup: async (req: IReqAuth, res: Response) => {
+        try {
+            const { data } = req.body
+            const { user } = req
+
+            if (user) {
+                data.groupUsers.forEach(async (userId: any) => {
+                    await Users.findByIdAndUpdate(userId, {
+                        $push: { groupAddedUsers: data }
+                    })
+                })
+                return res.json({ msg: 'Group added' })
+            }
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
 }

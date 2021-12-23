@@ -29,6 +29,17 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'teacher'
     },
+    roleUsers: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'user'
+    }],
+    groupAddedUsers: [{
+        groupName: String,
+        groupUsers: [{
+            type: mongoose.Types.ObjectId,
+            ref: 'user'
+        }]
+    }]
 
 }, {
     timestamps: true

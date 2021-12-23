@@ -5,6 +5,7 @@ import { ILoginData } from '../../models/IAuth'
 import { AUTH } from "./types"
 import { AlertAC, alertActions } from '../alert/actions'
 import { authAPI } from '../../utils/services/authService'
+import { UserAC, userActions } from '../user/actions'
 
 export const authActions = {
     auth: (payload: IAuth) => { return { type: AUTH, payload } as const }
@@ -40,7 +41,7 @@ export const authThunks = {
             dispatch(alertActions.alert({ error: error.response.data.msg }))
         }
     },
-    logout: () => async (dispatch: Dispatch<AuthAC | AlertAC>) => {
+    logout: () => async (dispatch: Dispatch<AuthAC | AlertAC | UserAC>) => {
         try {
             dispatch(alertActions.alert({ loading: true }))
 
@@ -48,6 +49,7 @@ export const authThunks = {
             dispatch(authActions.auth({} as IAuth))
 
             localStorage.removeItem('token')
+            dispatch(userActions.nullifySearchedUsers())
 
             dispatch(alertActions.alert({ success: res.data.msg }))
         } catch (error: any) {

@@ -1,4 +1,4 @@
-interface ICommon {
+export interface ICommon {
     _id: string
     createdAt: string
     updatedAt: string
@@ -10,12 +10,22 @@ export interface IUser extends ICommon {
     password: string
     avatar: string
     role: string
+    roleUsers: IResUser[]
+    groupAddedUsers: IResGroup[]
 }
-export interface IStudent {
+export interface IResUser {
     _id: string
     avatar: string
     username: string
     fullname: string
 }
-export type SearchedUsers = IStudent[]
-export type SearchedUser = IStudent
+export interface IResGroup {
+    _id: string
+    groupName: string
+    groupUsers: IResUser[]
+}
+export interface IResNewUser {
+    user: IResUser
+    msg: string
+}
+

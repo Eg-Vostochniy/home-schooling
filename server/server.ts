@@ -15,6 +15,8 @@ app.use(urlencoded())
 
 app.use('/api', routes.authRouter)
 app.use('/api', routes.userRouter)
+app.use('/api', routes.notifyRouter)
+app.use('/api', routes.lessonRouter)
 
 require('./config/database')
 

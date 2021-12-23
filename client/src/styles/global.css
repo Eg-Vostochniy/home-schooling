@@ -14,6 +14,9 @@ ul,li{
 input{
     outline: none;
 }
+button:disabled{
+    background: #516e94;
+}
 .App {
     max-width: 1200px;
     width: 100%;
@@ -24,7 +27,7 @@ input{
 .main{
     display: grid;
     grid-template-columns: 1fr 6fr;
-    gap: 15px;
+    gap: 9px;
 }
 
 @import url('./auth.css');
@@ -33,3 +36,4 @@ input{
 @import url('./alert.css');
 @import url('./avatar.css');
 @import url('./popup.css');
+@import url('./timetable.css');

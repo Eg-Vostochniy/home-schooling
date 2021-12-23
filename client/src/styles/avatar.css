@@ -3,3 +3,13 @@
     height: 30px;
     border-radius: 50px;
 }
+.medium {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+.big {
+    width: 70px;
+    height: 70px;
+    border-radius: 50px;
+}

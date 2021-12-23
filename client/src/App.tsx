@@ -1,20 +1,22 @@
-import { ChangeEvent, FormEvent, Suspense, lazy } from "react"
+import { ChangeEvent, FormEvent, Suspense, lazy, useEffect } from "react"
 import { Routes, Route, Navigate, useLocation } from "react-router-dom"
 import { Alert } from "./components/Modals/Alert"
 import { Loading } from "./components/Modals/Alert/Loading"
 import { Navbar } from "./components/Navbar"
+import { useAppDispatch } from "./hooks/useAppDispatch"
 import { useAuth } from "./hooks/useAuth"
 import { Home } from "./pages/Home"
 import Login from "./pages/Login"
-import { Messages } from "./pages/Messages"
-import { Users } from "./pages/Users"
 import './styles/global.css'
 
 const Register = lazy(() => import('./pages/Register'))
+const EditProfile = lazy(() => import('./pages/EditProfile'))
+const Messages = lazy(() => import('./pages/Messages'))
 
 export const App: React.FC = () => {
   const isAuth = useAuth()
   const { pathname } = useLocation()
+  const { getNotifies } = useAppDispatch()
 
   const PrivateRoute = (props: any) => {
     return isAuth ? props.children : <Navigate to='/login' />
@@ -24,6 +26,13 @@ export const App: React.FC = () => {
     return !isAuth ? props.children : <Navigate to='/' />
   }
 
+  useEffect(() => {
+    if (isAuth) {
+      getNotifies(isAuth)
+    }
+    //eslint-disable-next-line
+  }, [isAuth])
+
   return (
     <div className='App'>
       <Alert />
@@ -32,13 +41,13 @@ export const App: React.FC = () => {
 
         <Routes>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path='/users' element={<PrivateRoute><Users /></PrivateRoute>} />
-          <Route path='/messages' element={<Messages />} />
           <Route path='/login' element={<PublicRoute><Login /></PublicRoute>} />
         </Routes>
         <Suspense fallback={<Loading />}>
           <Routes>
             <Route path='/register' element={<PublicRoute><Register /></PublicRoute>} />
+            <Route path='/edit_profile' element={<PrivateRoute><EditProfile /></PrivateRoute>} />
+            <Route path='/messages' element={<PrivateRoute><Messages /></PrivateRoute>} />
           </Routes>
         </Suspense>
 

@@ -2,11 +2,11 @@ import { useState } from "react"
 import { useAppSelector } from "./useAppSelector"
 
 type Props = {
-    getUsers: (username: string, token: string) => void
+    search: (username: string, token: string) => void
     searchValue: string
 }
 
-export const useSearch = ({ getUsers, searchValue }: Props) => {
+export const useSearch = ({ search, searchValue }: Props) => {
     const [isSearched, setIsSearched] = useState(false)
     const [isLoad, setIsLoad] = useState(false)
 
@@ -15,7 +15,7 @@ export const useSearch = ({ getUsers, searchValue }: Props) => {
     const handleSearch = async () => {
         if (searchValue.length > 0 && !isLoad) {
             setIsLoad(true)
-            await getUsers(searchValue, token)
+            await search(searchValue, token)
             setIsSearched(true)
             setIsLoad(false)
         }

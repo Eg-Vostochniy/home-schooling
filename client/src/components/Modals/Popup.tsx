@@ -1,24 +1,58 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import { useAppDispatch } from "../../hooks/useAppDispatch"
+import { useAppSelector } from "../../hooks/useAppSelector"
 import { useClickOutside } from "../../hooks/useClickOutside"
-import { SearchedUsers } from "../../models/IUser"
+import { IResUser } from "../../models/IUser"
+import { Avatar } from "../Avatar"
 import { Portal } from "./Portal"
+import loading from '../../img/Spinner-1s-200px.gif'
 
 type Props = {
     onClose: () => void
     popupName: string
     popupButton: string
-    searchedUsers: SearchedUsers
+    searchedUsers: IResUser[]
 }
 
 export const Popup: React.FC<Props> = ({ children, onClose, popupName, popupButton, searchedUsers }) => {
     const ref = useRef<HTMLDivElement>(null)
-    const { deleteSearchedUser } = useAppDispatch()
+    const [err, setErr] = useState('')
+    const [isLoad, setIsLoad] = useState(false)
+
+    const { token, user } = useAppSelector(state => state.authReducer)
+    const { notifies } = useAppSelector(state => state.notifyReducer)
+
+    const { deleteSearchedUser, nullifySearchedUsers, createNotify } = useAppDispatch()
 
     useClickOutside(ref, onClose)
 
-    const setUsers = () => {
-        console.log(searchedUsers)
+    const setUsers = async () => {
+        if (searchedUsers.length === 0) setErr('Вы не добавили пользователя')
+        else {
+            if (user.roleUsers.length === 0 ||
+                !user.roleUsers.find(user => searchedUsers.find(sUsr => (
+                    sUsr._id === user._id
+                )))
+            ) {
+                if (!notifies.find(ntf => searchedUsers.find(sUsr => (
+                    sUsr._id === ntf.user._id
+                )))
+                ) {
+                    setIsLoad(true)
+                    await createNotify({
+                        title: `Хотите стать ${user.role === 'teacher' ?
+                            'учеником у' :
+                            'учителем для'} ${user.username}`,
+                        content: 'confirm',
+                        recipients: searchedUsers.map(user => user._id)
+                    }, token)
+                    await nullifySearchedUsers()
+                    setIsLoad(false)
+                }
+                else setErr('Этот пользователь отправил вам приглашение')
+            }
+            else setErr('Пользователь уже добавлен')
+        }
     }
 
     return (
@@ -37,7 +71,7 @@ export const Popup: React.FC<Props> = ({ children, onClose, popupName, popupButt
                         {
                             searchedUsers.map(user => (
                                 <div key={user._id} className='added_searched-user'>
-                                    <img src={user.avatar} alt='user' />
+                                    <Avatar url={user.avatar} size='small' />
                                     <div>{user.username}</div>
                                     <span onClick={() => deleteSearchedUser(user._id)}>
                                         &times;
@@ -46,7 +80,11 @@ export const Popup: React.FC<Props> = ({ children, onClose, popupName, popupButt
                             ))
                         }
                     </div>
-                    <button onClick={setUsers}>{popupButton}</button>
+                    {err && <div>{err}</div>}
+                    <button disabled={isLoad} onClick={setUsers}>{
+                        !isLoad ?
+                            popupButton :
+                            <img src={loading} alt='load' />}</button>
                 </div>
             </div>
         </Portal>

@@ -7,15 +7,16 @@
     background: #FFFFFF;
     border: 1px solid #EFEFEF;
     color: #235390;
-    padding: 12px 15px 12px 12px;
+    padding: 12px 5px 0px 9px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    font-size: 14px;
 }
 .navbar .logo{
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border-bottom: 1px solid #dcdcdc5f;
 }
 .navbar .logo img {
@@ -52,7 +53,16 @@
     content: url('../img/Курс.svg');
     margin-right: 5px;
 }
-.navbar .secondary_nav div:nth-child(1)::before{
+.navbar .primary_nav nav ul li:nth-child(4)::before{
+    content: url('../img/Свернуть.svg');
+    margin-right: 5px;
+}
+.navbar .primary_nav nav ul li:nth-child(5)::before{
+    content: url('../img/Блог.svg');
+    margin-right: 5px;
+}
+
+.navbar .secondary_nav div::before{
     content: 'X';
     border-radius: 50px;
     color: white;
@@ -60,18 +70,35 @@
     background: #235390;
     padding: 4px 7px 3px 7px;
     margin-right: 5px;
-}
-.navbar .secondary_nav div:nth-child(2)::before{
-    content: url('../img/Свернуть.svg');
-    margin-right: 5px;
-}
+} 
 .navbar .primary_nav .auth_user{
     display: flex;
     align-items: center;
     justify-content: left;
+    padding-bottom: 15px;
     margin-bottom: 25px;
+    border-bottom: 1px solid #dcdcdc5f;
 }
 .navbar .primary_nav .auth_user span{
     margin-left: 6px;
 }
+.navbar .primary_nav #notify_nav-li{
+    position: relative;
+}
+.navbar .primary_nav #notify_nav-li .notify{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background: #235290;
+    border-radius: 4px;
+    color: #FFFFFF;
+    font-size: 14px;
+    padding: 10px 5px 5px 5px;
+    max-height: 200px;
+    width: 100%;
+    overflow: auto;
+    text-align: center;
+    cursor: text;
+}
+
 

@@ -56,7 +56,7 @@ export const authCtrl = {
         try {
             const { email, password }: ILogUser = req.body
 
-            const user = await User.findOne({ email })
+            const user = await User.findOne({ email }).populate('roleUsers', 'username avatar fullname')
             if (!user) return res.status(400).json({ msg: 'Data is incorrect' })
 
             const isMath = await bcrypt.compare(password, user.password)
@@ -99,10 +99,11 @@ export const authCtrl = {
             jwt.verify(rf_token, `${process.env.REFRESH_TOKEN}`, async (err: any, result: any) => {
                 if (err) return res.status(400).json({ msg: 'Please login' })
 
-                const user = await User.findById(result.id).select('-password')
+                const user = await User.findById(result.id)
+                    .select('-password').populate('roleUsers', 'username avatar fullname')
                 if (!user) return res.status(400).json({ msg: 'User undefined' })
 
-                const token = generateAccessToken({ id: user.id })
+                const token = generateAccessToken({ id: result.id })
 
                 res.json({
                     msg: 'Login success',

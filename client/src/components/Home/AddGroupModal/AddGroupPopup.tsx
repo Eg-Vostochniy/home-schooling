@@ -1,14 +1,15 @@
 import { useCallback, useState } from "react"
 import { useAppSelector } from "../../../hooks/useAppSelector"
 import { AddButton } from "../../AddButton"
-import { Popup } from "../../Modals/Popup"
+import { GroupPopup } from "../../Modals/GroupPopup"
 import { SearchAddedStudent } from "./SearchAddedStudents"
 
 
 export const AddGroupPopup: React.FC = ({ children }) => {
     const [isOpen, setIsOpen] = useState(false)
+    const [groupName, setGroupName] = useState('')
 
-    const { searchedUsers } = useAppSelector(state => state.userReducer)
+    const { searchedGroupUsers } = useAppSelector(state => state.userReducer)
 
     const handleClose = useCallback(() => {
         setIsOpen(false)
@@ -21,14 +22,17 @@ export const AddGroupPopup: React.FC = ({ children }) => {
             <AddButton handleOpen={handleOpen}>{children}</AddButton>
             {
                 isOpen && (
-                    <Popup
+                    <GroupPopup
+                        groupName={groupName}
                         onClose={handleClose}
-                        popupName='Выберите, кого добавить в группу'
-                        popupButton='Добавить группу'
-                        searchedUsers={searchedUsers}
+                        searchedUsers={searchedGroupUsers}
                     >
-                        <SearchAddedStudent addedSearchedUsers={searchedUsers} />
-                    </Popup>
+                        <SearchAddedStudent
+                            addedSearchedUsers={searchedGroupUsers}
+                            setGroupName={setGroupName}
+                            groupName={groupName}
+                        />
+                    </GroupPopup>
                 )
             }
         </>

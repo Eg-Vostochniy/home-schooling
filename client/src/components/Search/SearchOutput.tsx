@@ -1,12 +1,12 @@
 import { useRef } from "react"
 import { useClickOutside } from "../../hooks/useClickOutside"
-import { SearchedUser, SearchedUsers } from "../../models/IUser"
+import { IResUser } from "../../models/IUser"
 import { Avatar } from "../Avatar"
 
 type Props = {
     onClose: () => void
-    searched_users: SearchedUsers
-    setChoosedUser: (user: SearchedUser) => void
+    searched_users: IResUser[]
+    setChoosedUser: (user: IResUser) => void
 }
 
 export const SearchOutput: React.FC<Props> = ({ onClose, searched_users, setChoosedUser }) => {

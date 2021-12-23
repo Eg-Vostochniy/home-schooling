@@ -1,10 +1,9 @@
 import { InputChange } from "../../App"
-import { SearchedUser, SearchedUsers } from "../../models/IUser"
+import { IResUser } from "../../models/IUser"
 import search from '../../img/premium-icon-search-2414255.png'
 import loading from '../../img/Spinner-1s-200px.gif'
 import { SearchOutput } from "./SearchOutput"
 import { useRef, useState } from "react"
-import { useAppDispatch } from "../../hooks/useAppDispatch"
 import { useClickOutside } from "../../hooks/useClickOutside"
 
 type Props = {
@@ -15,8 +14,9 @@ type Props = {
     setSearchValue: (value: string) => void
     searchValue: string
     handleSearch: () => void
-    searched_users: SearchedUsers
-    addedSearchedUsers: SearchedUsers
+    searched_users: IResUser[]
+    addedSearchedUsers: IResUser[]
+    setSearchedUsers: (user: IResUser) => void
 }
 
 export const Search: React.FC<Props> = ({
@@ -28,10 +28,10 @@ export const Search: React.FC<Props> = ({
     handleSearch,
     isSearched,
     searched_users,
-    addedSearchedUsers
+    addedSearchedUsers,
+    setSearchedUsers
 }) => {
     const [isClosed, setIsClosed] = useState(true)
-    const { setSearchedUsers } = useAppDispatch()
     const [err, setErr] = useState('')
     const [isErrClosed, setIsErrClosed] = useState(true)
 
@@ -47,7 +47,7 @@ export const Search: React.FC<Props> = ({
             setSearchValue(e.target.value)
         }
     }
-    const handleChooseUser = (choosedUser: SearchedUser) => {
+    const handleChooseUser = (choosedUser: IResUser) => {
         err && setIsErrClosed(true)
         setErr('')
         if (!addedSearchedUsers.find(user => user._id === choosedUser._id))

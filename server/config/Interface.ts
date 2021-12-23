@@ -7,6 +7,8 @@ export interface IUser extends Document {
     email: string
     avatar: string
     password: string
+    roleUsers: string[]
+    groupUsers: string[]
     role: string
     _doc: object
 }
@@ -34,4 +36,20 @@ export interface IDecodedToken {
 }
 export interface IReqAuth extends Request {
     user?: IUser
+}
+export interface INotify {
+    _id: string
+    user: { type: string, ref: string }
+    recipients: string[]
+    title: string
+    content: string
+}
+export interface ILesson {
+    _id: string
+    teacher: string
+    lessonUser: string
+    usersType: string
+    lessonStart: string
+    lessonDuration: string
+    lessonStatus: string
 }
