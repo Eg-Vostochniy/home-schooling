@@ -76,9 +76,9 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50px;
+    min-height: 50px;
 }
-.content .timetable_grid div span{
+.content .timetable_grid .timetable_cell .new_lesson{
     border: 2px dashed #235390;
     padding: 5px;
     color: #235390;
@@ -89,7 +89,7 @@
     font-size: 13px;
     font-weight: bold;
 }
-.content .timetable_grid div span::before{
+.content .timetable_grid .timetable_cell .new_lesson::before{
     content: '+';
     background: #235390;
     padding: 0 3px 0 3px;
@@ -98,8 +98,10 @@
     color: white;
     font-weight: bold;
 }
-.content .timetable_grid div:hover span{
-    display: block;
+.content .timetable_grid .timetable_cell:hover .new_lesson{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .content .timetable_content .timetable_header{
     display: grid;
@@ -169,4 +171,38 @@
 }
 .add_lesson_popup-nav .add_group.active{
     border-bottom: 2px solid #C200AF;
+}
+.timetable_grid .timetable_cell .cell_lesson div{
+    width: 90%;
+    height: 90%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.timetable_grid .timetable_cell .cell_lesson.one div{
+    background: #A1EEF9;  
+}
+.timetable_grid .timetable_cell .cell_lesson.two div{
+    background: #A1F9CF;  
+}
+.timetable_grid .timetable_cell .cell_lesson.three div{
+    background: #F9A1A1;  
+}
+.timetable_grid .timetable_cell .cell_lesson .user_cell{
+    padding: 0 3px 0 3px;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.timetable_grid .timetable_cell .cell_lesson .user_cell div{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-size: 12px;
+}
+.timetable_grid .timetable_cell .cell_lesson .group_cell{
+    display: flex;
+    justify-content: space-evenly;
+}
+.timetable_grid .timetable_cell .cell_lesson .group_cell img{
+    width: 18px;
+    height: 18px;
 }

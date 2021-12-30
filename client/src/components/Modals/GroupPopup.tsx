@@ -21,7 +21,7 @@ export const GroupPopup: React.FC<Props> = ({ children, onClose, searchedUsers, 
     const [isLoad, setIsLoad] = useState(false)
 
     const { deleteSearchedUser, addNewGroup } = useAppDispatch()
-    const { token } = useAppSelector(state => state.authReducer)
+    const { token, user, msg } = useAppSelector(state => state.authReducer)
     const { _id } = useAppSelector(state => state.authReducer.user)
 
     let groupUsers = searchedUsers.map(user => user._id)
@@ -30,7 +30,7 @@ export const GroupPopup: React.FC<Props> = ({ children, onClose, searchedUsers, 
         setIsLoad(true)
         await addNewGroup({
             groupUsers: [...groupUsers, _id], groupName
-        }, token)
+        }, { token, msg, user })
         setIsLoad(false)
     }
 

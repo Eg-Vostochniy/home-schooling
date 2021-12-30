@@ -13,7 +13,7 @@ export const valid = {
         else if (username.length > 15) errs = [...errs, 'Имя пользователя больше 15 символов']
 
         if (!fullname) errs = [...errs, 'Введите полное имя']
-        else if (fullname.length > 20) errs = [...errs, 'Полное больше 20 символов']
+        else if (fullname.length > 20) errs = [...errs, 'Полное имя больше 20 символов']
 
         if (!email) errs = [...errs, 'Введите электронную почту']
         else if (!validateEmail(email)) errs = [...errs, 'Невалидная эл.почта']

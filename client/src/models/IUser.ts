@@ -19,10 +19,12 @@ export interface IResUser {
     username: string
     fullname: string
 }
-export interface IResGroup {
-    _id: string
+export interface IGroup {
     groupName: string
-    groupUsers: IResUser[]
+    groupUsers: string[]
+}
+export interface IResGroup extends IGroup {
+    _id: string
 }
 export interface IResNewUser {
     user: IResUser

@@ -100,5 +100,41 @@
     text-align: center;
     cursor: text;
 }
+.notify .notify_block {
+    margin-bottom: 8px;
+    position: relative;
+}
+.notify .notify_block img,
+.notify .notify_confirm img{
+    width: 20px;
+    height: 20px;
+}
+.notify .notify_block div:nth-child(1){
+    font-size: 16px;
+    color: #d34ac5;
+}
+.notify .notify_block span{
+    position: absolute;
+    top: 2px;
+    right: 0;
+    cursor: pointer;
+    color: tomato;
+}
+.notify .confirm_block{
+    margin-bottom: 8px;
+}
+.notify .confirm_block div:nth-child(2){
+    display: flex;
+    justify-content: space-evenly;
+}
+.notify .confirm_block button{
+    background: white;
+    padding: 2px 4px 2px 4px;
+    border: 1px solid #F5E6FE;
+    border-radius: 7px;
+    margin-top: 3px;
+    cursor: pointer;
+}
+
 
 

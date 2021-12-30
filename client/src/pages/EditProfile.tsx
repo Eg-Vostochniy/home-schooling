@@ -4,17 +4,20 @@ import { Avatar } from "../components/Avatar"
 import { useAppDispatch } from "../hooks/useAppDispatch"
 import { useAppSelector } from "../hooks/useAppSelector"
 import { checkImage, imageUpload } from "../utils/imageUpload"
+import loading from '../img/Spinner-1s-200px.gif'
+import camera from '../img/photo-camera-interface-symbol-for-button.png'
 
 const EditProfile: React.FC = () => {
-    const { avatar, username, fullname, email, roleUsers } = useAppSelector(state => state.authReducer.user)
-    const { alert } = useAppDispatch()
+    const { avatar, username, fullname } = useAppSelector(state => state.authReducer.user)
+    const { token, user } = useAppSelector(state => state.authReducer)
+    const { alert, updateAuthedUser } = useAppDispatch()
 
     const [profileValues, setProfileValues] = useState({
         username,
-        fullname,
-        email
+        fullname
     })
     const [avatarPh, setAvatarPh] = useState<File>()
+    const [isLoad, setIsLoad] = useState(false)
 
     const handleChangeAvatar = (e: any) => {
         const file = e.target.files[0]
@@ -29,16 +32,31 @@ const EditProfile: React.FC = () => {
         setProfileValues({ ...profileValues, [name]: value })
     }
     const handleSubmit = async () => {
+        setIsLoad(true)
         const media = await imageUpload(avatarPh)
-        if (media) {
 
-        }
+        updateAuthedUser({
+            ...user,
+            ...profileValues,
+            avatar: media ? media.url : user.avatar
+        }, token)
+        setIsLoad(false)
     }
     return (
         <div className='edit_profile'>
-            <Avatar url={avatar} size='big' />
-            <input type='file' alt='avatar' onChange={handleChangeAvatar} />
-            <div>
+            <div className='edit_image'>
+                <Avatar url={avatarPh ? URL.createObjectURL(avatarPh) : avatar} size='big' />
+                <span>
+                    <p>Изменить</p>
+                    <input
+                        type='file'
+                        id='file_up'
+                        accept='image/*'
+                        onChange={handleChangeAvatar}
+                    />
+                </span>
+            </div>
+            <div className='edit_content'>
                 <label>
                     <span>Имя пользователя</span>
                     <input
@@ -57,27 +75,9 @@ const EditProfile: React.FC = () => {
                         onChange={handleChange}
                     />
                 </label>
-                <label>
-                    <span>Эл. почта</span>
-                    <input
-                        type='text'
-                        name='email'
-                        value={profileValues.email}
-                        onChange={handleChange}
-                    />
-                </label>
-                <button onClick={handleSubmit}>Go</button>
-            </div>
-            <div>
-                <div className='added_users'>
-                    {roleUsers.map(user => (
-                        <div key={user._id} className='added_user-block'>
-                            <Avatar url={user.avatar} size='medium' />
-                            <span>{user.username}</span>
-                            <span>{user.fullname}</span>
-                        </div>
-                    ))}
-                </div>
+                <button disabled={isLoad} onClick={handleSubmit}>
+                    {isLoad ? <img src={loading} alt='load' /> : 'Редактировать'}
+                </button>
             </div>
         </div>
     )

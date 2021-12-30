@@ -19,3 +19,8 @@ export interface IAuth {
     user: IUser
     token: string
 }
+export interface IEditProfile {
+    username: string
+    fullname: string
+    avatar: string
+}

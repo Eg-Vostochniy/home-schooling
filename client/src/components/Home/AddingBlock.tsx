@@ -5,6 +5,7 @@ import { Avatar } from "../Avatar"
 import { AddGroupPopup } from "./AddGroupModal/AddGroupPopup"
 import { AddUserPopup } from "./AddUserModal/AddUserPopup"
 import ava from '../../img/mad-scientist 2.png'
+import { ConfirmModal } from "../Modals/ConfirmModal"
 
 type Props = {
     titleCont: string
@@ -18,7 +19,7 @@ export const AddingBlock: React.FC<Props> = memo((props) => {
 
     const { deleteUser } = useAppDispatch()
     const { roleUsers, role, groupAddedUsers } = useAppSelector(state => state.authReducer.user)
-    const { token } = useAppSelector(state => state.authReducer)
+    const { token, msg, user } = useAppSelector(state => state.authReducer)
 
     const [active, setActive] = useState(1)
     const [isDeleteModal, setIsDeleteModal] = useState(false)
@@ -34,7 +35,8 @@ export const AddingBlock: React.FC<Props> = memo((props) => {
         setIsDeleteModal(true)
     }
     const handleDeleteUser = () => {
-        deleteUser(delUserId, token)
+        deleteUser(delUserId, { token, msg, user })
+        setIsDeleteModal(false)
     }
 
     return (
@@ -83,16 +85,20 @@ export const AddingBlock: React.FC<Props> = memo((props) => {
                                 {groupAddedUsers.map(user => (
                                     <div className='added_user-block'>
                                         <Avatar url={ava} size="medium" />
+                                        <span>{user.groupName}</span>
                                     </div>
                                 ))}
                             </div>
                 }
                 {
-                    isDeleteModal && <div className='delete_modal'>
-                        <span>Хотите удалить этого пользователя?</span>
-                        <button onClick={handleDeleteUser}>Да</button>
-                        <button onClick={() => setIsDeleteModal(false)}>Отмена</button>
-                    </div>
+                    isDeleteModal &&
+                    <ConfirmModal
+                        onAccept={handleDeleteUser}
+                        onRefuse={() => setIsDeleteModal(false)}
+                        onClose={() => setIsDeleteModal(false)}
+                    >
+                        Хотите удалить этого пользователя?
+                    </ConfirmModal>
                 }
             </div>
         </div>

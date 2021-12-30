@@ -7,24 +7,33 @@ import { Portal } from "./Portal"
 import loading from '../../img/Spinner-1s-200px.gif'
 import { Moment } from "moment"
 import groupAva from '../../img/mad-scientist 2.png'
-import { lessonAPI } from "../../utils/services/lessonService"
+import { IResGroup, IResUser } from "../../models/IUser"
 
 type Props = {
     onClose: () => void
     dataCell: Moment
 }
 
+type DataForLesson = {
+    type: string
+    data: IResGroup | IResUser
+}
+
 export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
     const ref = useRef<HTMLDivElement>(null)
-    console.log(dataCell.format('YYYY-MM-DD-HH:00'))
 
     const [err, setErr] = useState('')
     const [isLoad, setIsLoad] = useState(false)
-    const [dataForLesson, setDataForLesson] = useState<string>('')
+    const [dataForLesson, setDataForLesson] = useState({
+        data: {
+            _id: ''
+        },
+        type: ''
+    } as DataForLesson)
 
     const { token, user } = useAppSelector(state => state.authReducer)
 
-    const { createNotify } = useAppDispatch()
+    const { createNotify, createLesson } = useAppDispatch()
 
     useClickOutside(ref, onClose)
 
@@ -36,26 +45,23 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
     ]
 
     const setNewLesson = async () => {
-        if (dataForLesson.length === 0) setErr('Вы не добавили пользователя')
+        if (Object.keys(dataForLesson.data).length === 0) setErr('Вы не добавили пользователя')
         else {
             setIsLoad(true)
-            /* await createNotify({
+            await createNotify({
                 title: `Новый урок`,
-                content: `${user.username} запланировал ${dataCell.format('YYYY-MM-DD  HH:00')} с вами урок`,
-                recipients: dataForLesson
-            }, token) */
-            try {
-                await lessonAPI.createLesson({
-                    lessonStart: dataCell.format(),
-                    lessonDuration: '60',
-                    lessonStatus: '1',
-                    lessonUser: dataForLesson,
-                    usersType: 'user',
-                    teacher: user._id
-                }, token)
-            } catch (error: any) {
-                return new Error(error)
-            }
+                content: `${user.username} запланировал 
+                ${dataCell.format('YYYY-MM-DD  HH:00')} с вами урок`,
+                recipients: [dataForLesson.data._id]
+            }, token)
+
+            await createLesson({
+                lessonStart: dataCell.format(),
+                lessonStatus: '1',
+                lessonType: dataForLesson.type,
+                lessonUser: dataForLesson.data,
+                teacher: user._id
+            }, token)
             setIsLoad(false)
         }
     }
@@ -97,25 +103,17 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
                                         <div
                                             key={userR._id}
                                             className={
-                                                `${dataForLesson[0] === userR._id ?
+                                                `${dataForLesson.data._id === userR._id ?
                                                     'add_lesson_users-popup-active' :
                                                     'add_lesson_users-popup'}`
                                             }
-                                            onClick={() => setDataForLesson(userR._id)}
+                                            onClick={() => setDataForLesson({ data: userR, type: 'user' })}
                                         >
                                             <Avatar url={userR.avatar} size='small' />
                                             <div>
                                                 <div>{userR.username}</div>
                                                 <div>{userR.fullname}</div>
                                             </div>
-                                            {
-                                                dataForLesson[0] === userR._id && <select>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                </select>
-                                            }
                                         </div>
                                     )) :
                                     <div>У вас нету учеников</div>
@@ -128,24 +126,16 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
                                         <div
                                             key={group._id}
                                             className={
-                                                `${dataForLesson[0] === group._id ?
+                                                `${dataForLesson.data._id === group._id ?
                                                     'add_lesson_users-popup-active' :
                                                     'add_lesson_users-popup'}`
                                             }
-                                            onClick={() => setDataForLesson(group._id)}
+                                            onClick={() => setDataForLesson({ data: group, type: 'group' })}
                                         >
                                             <img src={groupAva} alt='ava' />
                                             <div>
                                                 <div>{group.groupName}</div>
                                             </div>
-                                            {
-                                                dataForLesson[0] === group._id && <select>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                    <option>asd</option>
-                                                </select>
-                                            }
                                         </div>
                                     )) :
                                     <div>У вас нету учеников</div>

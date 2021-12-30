@@ -1,6 +1,7 @@
 import { Moment } from 'moment'
 import { memo, useState } from 'react'
 import { AddLessonPopup } from '../../Modals/AddLessonPopup'
+import { TimetableCell } from './TimetableCell'
 
 type Props = {
     cellsList: Moment[]
@@ -14,11 +15,6 @@ export const Timetable: React.FC<Props> = memo(({ cellsList, weekDays, dayHours 
 
     const handleClosePopup = () => {
         setIsOpenPopup(false)
-    }
-
-    const handleOpenPopup = (dataCell: Moment) => {
-        setIsOpenPopup(true)
-        setDataCell(dataCell)
     }
 
     return (
@@ -44,9 +40,12 @@ export const Timetable: React.FC<Props> = memo(({ cellsList, weekDays, dayHours 
                     <div className='timetable_grid'>
                         {
                             cellsList.map(cell => (
-                                <div key={cell.unix()}>
-                                    <span onClick={() => handleOpenPopup(cell)}>Новый урок</span>
-                                </div>
+                                <TimetableCell
+                                    key={cell.unix()}
+                                    cell={cell}
+                                    setDataCell={setDataCell}
+                                    setIsOpenPopup={setIsOpenPopup}
+                                />
                             )
                             )
                         }

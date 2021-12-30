@@ -1,3 +1,4 @@
+import { lessonReducer } from './lesson/reducer';
 import { notifyReducer } from './notify/reducer';
 import { userReducer } from './user/reducer'
 import { alertReducer } from './alert/reducer'
@@ -10,7 +11,8 @@ const rootReducer = combineReducers({
     authReducer,
     alertReducer,
     userReducer,
-    notifyReducer
+    notifyReducer,
+    lessonReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))

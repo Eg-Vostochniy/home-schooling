@@ -1,6 +1,7 @@
 import { IReqAuth } from './../config/Interface'
 import { Response } from "express"
 import Users from "../models/userModel"
+import Lessons from "../models/lessonModel"
 
 export const userCtrl = {
     getUsers: async (req: IReqAuth, res: Response) => {
@@ -48,10 +49,7 @@ export const userCtrl = {
                     $push: { roleUsers: user._id }
                 }, { new: true })
 
-                return res.json({
-                    msg: 'User added',
-                    user: authUser
-                })
+                return res.json({msg: 'User added'})
             }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })
@@ -72,6 +70,30 @@ export const userCtrl = {
 
                 await usrAuth?.update({ $pull: { roleUsers: id } })
                 await roleUser?.update({ $pull: { roleUsers: user._id } })
+
+                if (user.role === 'student') {
+                    await Lessons.deleteMany({
+                        teacher: (id as any),
+                        lessonType: 'user',
+                        lessonUser: { _id: user._id }
+                    })
+                    const less = await Lessons.find({ teacher: (id as any) })
+                    await less?.forEach(l => {
+                        l.update({ $pull: { groupUsers: id } })
+                    })
+                }
+                if (user.role === 'teacher') {
+                    await Lessons.deleteMany({
+                        teacher: user._id,
+                        lessonType: 'user',
+                        lessonUser: { _id: id }
+                    })
+                    const less = await Lessons.find({ teacher: user._id })
+                    await less?.forEach(l => {
+                        l.update({ $pull: { groupUsers: id } })
+                    })
+                }
+
                 return res.json({ msg: 'User deleted' })
             }
         } catch (err: any) {
@@ -90,6 +112,23 @@ export const userCtrl = {
                     })
                 })
                 return res.json({ msg: 'Group added' })
+            }
+        } catch (err: any) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+    updateAuthedUser: async (req: IReqAuth, res: Response) => {
+        try {
+            const { username, fullname, avatar } = req.body
+            const { user } = req
+
+            if (user) {
+                const User = await Users.findByIdAndUpdate(user._id, {
+                    username, fullname, avatar
+                })
+                if (!User) return res.status(400).json({ msg: 'Update error' })
+
+                return res.json({ msg: 'Update success' })
             }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })

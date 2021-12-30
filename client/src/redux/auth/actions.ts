@@ -6,6 +6,8 @@ import { AUTH } from "./types"
 import { AlertAC, alertActions } from '../alert/actions'
 import { authAPI } from '../../utils/services/authService'
 import { UserAC, userActions } from '../user/actions'
+import { IUser } from '../../models/IUser'
+import { LessonAC, lessonActions } from '../lesson/actions'
 
 export const authActions = {
     auth: (payload: IAuth) => { return { type: AUTH, payload } as const }
@@ -41,12 +43,13 @@ export const authThunks = {
             dispatch(alertActions.alert({ error: error.response.data.msg }))
         }
     },
-    logout: () => async (dispatch: Dispatch<AuthAC | AlertAC | UserAC>) => {
+    logout: () => async (dispatch: Dispatch<AuthAC | AlertAC | UserAC | LessonAC>) => {
         try {
             dispatch(alertActions.alert({ loading: true }))
 
             const res = await authAPI.logout()
             dispatch(authActions.auth({} as IAuth))
+            dispatch(lessonActions.setLessons([]))
 
             localStorage.removeItem('token')
             dispatch(userActions.nullifySearchedUsers())
@@ -68,4 +71,20 @@ export const authThunks = {
             dispatch(alertActions.alert({ error: error.response.data.msg }))
         }
     },
+    updateAuthedUser: (data: IUser, token: string) => async (dispatch: Dispatch<AuthAC | AlertAC>) => {
+        try {
+            const res = await authAPI.updateAuthedUser({
+                username: data.username,
+                fullname: data.fullname,
+                avatar: data.avatar
+            }, token)
+            dispatch(authActions.auth({
+                token, user: data, msg: res.data.msg
+            }))
+
+            dispatch(alertActions.alert({ success: res.data.msg }))
+        } catch (error: any) {
+            dispatch(alertActions.alert({ error: error.response.data.msg }))
+        }
+    }
 }

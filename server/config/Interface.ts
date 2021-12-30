@@ -44,12 +44,23 @@ export interface INotify {
     title: string
     content: string
 }
-export interface ILesson {
+export interface ILesson extends Document {
     _id: string
     teacher: string
-    lessonUser: string
-    usersType: string
+    lessonUser: object
+    lessonType: string
     lessonStart: string
-    lessonDuration: string
     lessonStatus: string
+    _doc: object
+}
+export interface IGroupLesson {
+    groupName: string
+    groupUsers: string[]
+    _id: string
+}
+export interface IUserLesson {
+    username: string
+    fullname: string
+    avatar: string
+    _id: string
 }

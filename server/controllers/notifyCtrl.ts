@@ -9,7 +9,7 @@ export const notifyCtrl = {
             if (user) {
                 const notifies = await Notifies.find({
                     recipients: user._id
-                }).sort('-createdAt').populate('user', 'username avatar')
+                }).sort('-createdAt').populate('user', 'username avatar fullname')
                 return res.json(notifies)
             }
         } catch (err: any) {

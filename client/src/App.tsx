@@ -16,7 +16,7 @@ const Messages = lazy(() => import('./pages/Messages'))
 export const App: React.FC = () => {
   const isAuth = useAuth()
   const { pathname } = useLocation()
-  const { getNotifies } = useAppDispatch()
+  const { getNotifies, getLessons } = useAppDispatch()
 
   const PrivateRoute = (props: any) => {
     return isAuth ? props.children : <Navigate to='/login' />
@@ -29,6 +29,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (isAuth) {
       getNotifies(isAuth)
+      getLessons(isAuth)
     }
     //eslint-disable-next-line
   }, [isAuth])

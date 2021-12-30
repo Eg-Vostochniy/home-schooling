@@ -1,7 +1,9 @@
 import { Dispatch } from "redux"
-import { IResUser } from "../../models/IUser"
+import { IAuth } from "../../models/IAuth"
+import { IGroup, IResGroup, IResUser } from "../../models/IUser"
 import { userAPI } from "../../utils/services/userService"
 import { AlertAC, alertActions } from "../alert/actions"
+import { AuthAC, authActions } from "../auth/actions"
 import { ReturnActionsTypes } from "../index"
 import {
     ADD_NEW_USER,
@@ -75,26 +77,49 @@ export const userThunks = {
             dispatch(alertActions.alert({ error: err.response.data.msg }))
         }
     },
-    addNewUser: (id: string, token: string) => async (dispatch: Dispatch<AlertAC | UserAC>) => {
+    addNewUser: (user: IResUser, auth: IAuth) => async (dispatch: Dispatch<AlertAC | AuthAC>) => {
         try {
-            const res = await userAPI.addNewUser(id, token)
-            //dispatch(userActions.setNewUser(res.data.user))
+            const res = await userAPI.addNewUser(user._id, auth.token)
             dispatch(alertActions.alert({ success: res.data.msg }))
+
+            dispatch(authActions.auth({
+                ...auth, user: {
+                    ...auth.user,
+                    roleUsers: [...auth.user.roleUsers, user]
+                }
+            }))
         } catch (err: any) {
             dispatch(alertActions.alert({ error: err.response.data.msg }))
         }
     },
-    deleteUser: (id: string, token: string) => async (dispatch: Dispatch<AlertAC>) => {
+    deleteUser: (id: string, auth: IAuth) => async (dispatch: Dispatch<AlertAC | AuthAC>) => {
         try {
-            const res = await userAPI.deleteUser(id, token)
+            const res = await userAPI.deleteUser(id, auth.token)
             dispatch(alertActions.alert({ success: res.data.msg }))
+
+            dispatch(authActions.auth({
+                ...auth,
+                user: {
+                    ...auth.user,
+                    roleUsers: auth.user.roleUsers.filter(rU => rU._id !== id)
+                }
+            }))
         } catch (err: any) {
             dispatch(alertActions.alert({ error: err.response.data.msg }))
         }
     },
-    addNewGroup: (data: any, token: string) => async (dispatch: Dispatch<AlertAC>) => {
+    addNewGroup: (group: IGroup, auth: IAuth) => async (dispatch: Dispatch<AlertAC | AuthAC>) => {
         try {
-            const res = await userAPI.addNewGroup(data, token)
+            const res = await userAPI.addNewGroup(group, auth.token)
+            dispatch(alertActions.alert({ success: res.data.msg }))
+
+            dispatch(authActions.auth({
+                ...auth,
+                user: {
+                    ...auth.user,
+                    groupAddedUsers: [...auth.user.groupAddedUsers, group as IResGroup]
+                }
+            }))
         } catch (err: any) {
             dispatch(alertActions.alert({ error: err.response.data.msg }))
         }

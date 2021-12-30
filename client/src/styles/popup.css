@@ -145,3 +145,71 @@
     font-size: 16px;
     color: #FF2500;
 }
+.edit_lessons-buttons{
+    display: flex;
+    justify-content: space-evenly;
+    width: 80%;
+}
+.edit_lessons-buttons button {
+    width: 160px;
+}
+.edit_lessons-buttons button:nth-child(1) {
+    background: #b13924;
+    color: white;
+}
+.added_searched-users .edit_lesson_popup-user,
+.added_searched-users .edit_lesson_popup-group {
+    display: flex;
+    align-items: center;
+}
+.added_searched-users .edit_lesson_popup-user div, 
+.added_searched-users .edit_lesson_popup-group div {
+    display: flex;
+    flex-direction: column;
+    margin-left: 4px;
+}
+.popup_block .edit_popup_content{
+    display: flex;
+    flex-direction: column;
+}
+.popup_block .edit_popup_content span{
+    padding-bottom: 2px;
+}
+.popup_block .edit_popup_content select{
+    background: transparent;
+    border: 1px solid #AAAAAA;
+    border-radius: 10px;
+    padding: 5px;
+    outline: none;
+}
+.popup_block .edit_popup_content select option{
+    background: #F5E6FE;
+    border: 1px solid #F5E6FE;
+}
+.popup_block .confirm_modal {
+    min-width: 300px;
+    min-height: 100px;
+    background: #F5E6FE;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 15px 0 10px 0;
+}
+.popup_block .confirm_modal div{
+    width: 70%;
+    display: flex;
+    justify-content: space-around;
+}
+.popup_block .confirm_modal div button{
+    background: #235390;
+    border-radius: 10px;
+    border: none;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 13px;
+    color: #FFFFFF;
+    cursor: pointer;
+    padding: 7px; 
+}

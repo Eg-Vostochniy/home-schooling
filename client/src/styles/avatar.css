@@ -1,3 +1,8 @@
+.tiny{
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+}
 .small{
     width: 30px;
     height: 30px;
@@ -9,7 +14,7 @@
     border-radius: 50px;
 }
 .big {
-    width: 70px;
-    height: 70px;
+    width: 90px;
+    height: 90px;
     border-radius: 50px;
 }

@@ -50,7 +50,7 @@
     display: grid;
     grid-template-columns: 2fr 6fr;
     align-items: center;
-    min-height: 100px;
+    min-height: 120px;
 }
 .home .adding_info .adding_info-buttons{
     display: grid;

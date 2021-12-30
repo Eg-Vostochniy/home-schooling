@@ -1,18 +1,23 @@
-import { ICommon } from "./IUser"
-
-export interface ILesson extends ICommon {
-    teacher: string
-    lessonUser: string
-    usersType: string
+export interface IResLesson {
+    teacher: ITeacher
+    lessonUser: any
+    lessonType: string
     lessonStart: string
-    lessonDuration: string
     lessonStatus: string
 }
-export interface IResLesson {
+export interface IReqLesson {
     teacher: string
-    lessonUser: string
-    usersType: string
+    lessonUser: any
+    lessonType: string
     lessonStart: string
-    lessonDuration: string
     lessonStatus: string
+}
+export interface ILesson extends IResLesson {
+    _id: string
+}
+export interface ITeacher {
+    _id: string
+    avatar: String
+    username: String
+    fullname: string
 }
