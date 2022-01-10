@@ -38,3 +38,5 @@ button:disabled{
 @import url('./popup.css');
 @import url('./timetable.css');
 @import url('./edit_profile.css');
+@import url('./academic_performance.css');
+@import url('./messages.css');

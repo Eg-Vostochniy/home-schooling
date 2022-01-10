@@ -1,7 +1,8 @@
 import moment from "moment"
 import 'moment/locale/ru'
-import { useState } from "react"
-import { AcademicPreformance } from "./AcademicPerformance"
+import { useCallback, useState } from "react"
+import { AcademicPerformance } from "./AcademicPerformance"
+import { ContentNavInfo } from "./ContentNavInfo"
 import { Timetable } from "./Timetable"
 
 moment.locale('ru')
@@ -10,13 +11,13 @@ const TOTAL_CELLS_IN_GRID = 84
 const TOTAL_HOURS_IN_DAY = 12
 const TOTAL_WEEKS_IN_GRID = 7
 
+const Nav = [
+    { id: 1, name: 'Расписание', className: 'content_nav' },
+    { id: 2, name: 'Успеваемость', className: 'progress_nav' }
+]
+
 export const Content: React.FC = () => {
     const [active, setActive] = useState(1)
-
-    const Nav = [
-        { id: 1, name: 'Расписание', className: 'content_nav' },
-        { id: 2, name: 'Успеваемость', className: 'progress_nav' }
-    ]
     const [today, setToday] = useState(moment())
 
     const startDay = today.clone().startOf('week').startOf('day').add(1, 'day')
@@ -40,15 +41,15 @@ export const Content: React.FC = () => {
     const dayHours = [...Array(TOTAL_HOURS_IN_DAY)].map((_, index) => (
         moment().hour(index + 8).format('HH:00')
     ))
-    const handlePrevWeek = () => {
+    const handlePrevWeek = useCallback(() => {
         setToday(today.subtract(1, 'week').clone())
-    }
-    const handleTodayWeek = () => {
+    }, [today])
+    const handleTodayWeek = useCallback(() => {
         setToday(moment())
-    }
-    const handleNextWeek = () => {
+    }, [])
+    const handleNextWeek = useCallback(() => {
         setToday(today.add(1, 'week').clone())
-    }
+    }, [today])
 
     return (
         <div className="content">
@@ -65,11 +66,12 @@ export const Content: React.FC = () => {
                         ))
                     }
                 </div>
-                <div className='nav-buttons'>
-                    <span onClick={handlePrevWeek}>&lt;</span>
-                    <span onClick={handleTodayWeek}>сегодня</span>
-                    <span onClick={handleNextWeek}>&gt;</span>
-                </div>
+                <ContentNavInfo
+                    handlePrevWeek={handlePrevWeek}
+                    handleTodayWeek={handleTodayWeek}
+                    handleNextWeek={handleNextWeek}
+                    active={active}
+                />
             </div>
             <div className="basic_info">
                 {
@@ -79,7 +81,9 @@ export const Content: React.FC = () => {
                             weekDays={weekDays}
                             dayHours={dayHours}
                         /> :
-                        <AcademicPreformance />
+                        <div className='performance_content'>
+                            <AcademicPerformance />
+                        </div>
                 }
             </div>
         </div>

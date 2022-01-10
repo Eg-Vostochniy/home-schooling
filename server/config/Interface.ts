@@ -8,7 +8,7 @@ export interface IUser extends Document {
     avatar: string
     password: string
     roleUsers: string[]
-    groupUsers: string[]
+    groupAddedUsers: object[]
     role: string
     _doc: object
 }

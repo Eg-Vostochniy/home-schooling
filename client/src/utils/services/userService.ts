@@ -1,6 +1,14 @@
 import axios, { AxiosResponse } from "axios"
-import { IGroup, IResUser } from "../../models/IUser"
+import { IGroup, IResGroup, IResUser } from "../../models/IUser"
 
+type AddedUser = {
+    msg: string
+    addedUser: IResUser
+}
+type AddedGroup = {
+    msg: string
+    addedGroup: IResGroup
+}
 
 export const userAPI = {
     getUsers: async (username: string, token: string): Promise<AxiosResponse<IResUser[]>> => {
@@ -8,7 +16,7 @@ export const userAPI = {
             headers: { Authorization: token }
         })
     },
-    addNewUser: async (id: string, token: string): Promise<AxiosResponse<{ msg: string }>> => {
+    addNewUser: async (id: string, token: string): Promise<AxiosResponse<AddedUser>> => {
         return await axios.post(`/api/add_new_users`, { id }, {
             headers: { Authorization: token }
         })
@@ -18,7 +26,7 @@ export const userAPI = {
             headers: { Authorization: token }
         })
     },
-    addNewGroup: async (data: IGroup, token: string): Promise<AxiosResponse<{ msg: string }>> => {
+    addNewGroup: async (data: IGroup, token: string): Promise<AxiosResponse<AddedGroup>> => {
         return await axios.post('/api/add_new_group', { data }, {
             headers: { Authorization: token }
         })

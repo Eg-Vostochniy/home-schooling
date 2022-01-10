@@ -45,7 +45,7 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
     ]
 
     const setNewLesson = async () => {
-        if (Object.keys(dataForLesson.data).length === 0) setErr('Вы не добавили пользователя')
+        if (!dataForLesson.data._id) setErr('Вы не добавили пользователя')
         else {
             setIsLoad(true)
             await createNotify({
@@ -63,6 +63,7 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
                 teacher: user._id
             }, token)
             setIsLoad(false)
+            onClose()
         }
     }
 
@@ -130,7 +131,17 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
                                                     'add_lesson_users-popup-active' :
                                                     'add_lesson_users-popup'}`
                                             }
-                                            onClick={() => setDataForLesson({ data: group, type: 'group' })}
+                                            onClick={
+                                                () => setDataForLesson({
+                                                    data: {
+                                                        ...group,
+                                                        groupUsers: group.groupUsers.filter(gU => (
+                                                            gU !== user._id
+                                                        ))
+                                                    },
+                                                    type: 'group'
+                                                })
+                                            }
                                         >
                                             <img src={groupAva} alt='ava' />
                                             <div>
@@ -138,7 +149,7 @@ export const AddLessonPopup: React.FC<Props> = ({ onClose, dataCell }) => {
                                             </div>
                                         </div>
                                     )) :
-                                    <div>У вас нету учеников</div>
+                                    <div>У вас нету групп</div>
                             }
                         </div>
                     }

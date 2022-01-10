@@ -69,6 +69,7 @@ export const authThunks = {
             dispatch(alertActions.alert({ success: res.data.msg }))
         } catch (error: any) {
             dispatch(alertActions.alert({ error: error.response.data.msg }))
+            authThunks.logout()
         }
     },
     updateAuthedUser: (data: IUser, token: string) => async (dispatch: Dispatch<AuthAC | AlertAC>) => {

@@ -17,6 +17,7 @@ app.use('/api', routes.authRouter)
 app.use('/api', routes.userRouter)
 app.use('/api', routes.notifyRouter)
 app.use('/api', routes.lessonRouter)
+app.use('/api', routes.performanceRouter)
 
 require('./config/database')
 

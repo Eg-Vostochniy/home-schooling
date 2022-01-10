@@ -1,8 +1,18 @@
 import axios, { AxiosResponse } from "axios"
 import { ILesson, IReqLesson } from "../../models/ILesson"
 
+type AddedLesson = {
+    msg: string
+    addedLesson: ILesson
+}
+
+type UpdatedLesson = {
+    msg: string
+    lesson: ILesson
+}
+
 export const lessonAPI = {
-    createLesson: async (data: ILesson, token: string): Promise<AxiosResponse<{ msg: string }>> => {
+    createLesson: async (data: IReqLesson, token: string): Promise<AxiosResponse<AddedLesson>> => {
         return await axios.post('/api/create_lesson', data, {
             headers: { Authorization: token }
         })
@@ -17,7 +27,7 @@ export const lessonAPI = {
             headers: { Authorization: token }
         })
     },
-    updateLessonStatus: async (id: string, status: string, token: string) => {
+    updateLessonStatus: async (id: string, status: string, token: string): Promise<AxiosResponse<UpdatedLesson>> => {
         return await axios.patch('/api/update_lesson_status', { id, status }, {
             headers: { Authorization: token }
         })

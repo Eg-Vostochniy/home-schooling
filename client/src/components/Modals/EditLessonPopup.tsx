@@ -20,7 +20,10 @@ export const EditLessonPopup: React.FC<Props> = ({ onClose, lessonData, setIsEdi
     const [isLoad, setIsLoad] = useState(false)
     const [statusValue, setStatusValue] = useState('2')
 
-    const { deleteLesson, updateLessonStatus } = useAppDispatch()
+    const { deleteLesson,
+        updateLessonStatus,
+        isAddingResultsModal,
+        setLessonStudents } = useAppDispatch()
     const { token } = useAppSelector(state => state.authReducer)
 
     const handleChangeStatus = (e: any) => {
@@ -28,10 +31,17 @@ export const EditLessonPopup: React.FC<Props> = ({ onClose, lessonData, setIsEdi
     }
 
     const handleUpdateLesson = async () => {
-        setIsLoad(true)
-        await updateLessonStatus(lessonData._id, statusValue, token)
-        setIsLoad(false)
-        setIsEditOpen(false)
+        try {
+            setIsLoad(true)
+            await updateLessonStatus(lessonData._id, statusValue, token)
+            setIsLoad(false)
+            setIsEditOpen(false)
+            statusValue === '2' && setDataForLessonResultsModal()
+        } catch (err: any) {
+            setIsLoad(false)
+            setIsEditOpen(false)
+            throw new Error(err)
+        }
     }
     const handleDeleteLesson = async () => {
         setIsLoad(true)
@@ -39,7 +49,12 @@ export const EditLessonPopup: React.FC<Props> = ({ onClose, lessonData, setIsEdi
         setIsLoad(false)
         setIsEditOpen(false)
     }
-
+    const setDataForLessonResultsModal = () => {
+        isAddingResultsModal(true)
+        lessonData.lessonType === 'group' ?
+            setLessonStudents(lessonData.lessonUser.groupUsers) :
+            setLessonStudents([lessonData.lessonUser._id])
+    }
 
     return (
         <Portal>

@@ -1,9 +1,11 @@
 import { ChangeEvent, FormEvent, Suspense, lazy, useEffect } from "react"
 import { Routes, Route, Navigate, useLocation } from "react-router-dom"
+import { AddLessonResults } from "./components/Modals/AddLessonResult/AddLessonResults"
 import { Alert } from "./components/Modals/Alert"
 import { Loading } from "./components/Modals/Alert/Loading"
 import { Navbar } from "./components/Navbar"
 import { useAppDispatch } from "./hooks/useAppDispatch"
+import { useAppSelector } from "./hooks/useAppSelector"
 import { useAuth } from "./hooks/useAuth"
 import { Home } from "./pages/Home"
 import Login from "./pages/Login"
@@ -16,7 +18,9 @@ const Messages = lazy(() => import('./pages/Messages'))
 export const App: React.FC = () => {
   const isAuth = useAuth()
   const { pathname } = useLocation()
-  const { getNotifies, getLessons } = useAppDispatch()
+
+  const isLessonResult = useAppSelector(state => state.academicPerformanceReducer.isOpen)
+  const { getNotifies, getLessons, getPerformances } = useAppDispatch()
 
   const PrivateRoute = (props: any) => {
     return isAuth ? props.children : <Navigate to='/login' />
@@ -30,6 +34,7 @@ export const App: React.FC = () => {
     if (isAuth) {
       getNotifies(isAuth)
       getLessons(isAuth)
+      getPerformances(isAuth)
     }
     //eslint-disable-next-line
   }, [isAuth])
@@ -39,6 +44,7 @@ export const App: React.FC = () => {
       <Alert />
       <div className={isAuth ? 'main' : ''}>
         {isAuth && <Navbar />}
+        {isLessonResult && <AddLessonResults />}
 
         <Routes>
           <Route path='/' element={<PrivateRoute><Home /></PrivateRoute>} />

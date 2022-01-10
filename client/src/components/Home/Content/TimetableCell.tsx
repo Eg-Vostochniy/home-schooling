@@ -1,4 +1,4 @@
-import { Moment } from 'moment'
+import moment, { Moment } from 'moment'
 import { memo, useState } from 'react'
 import { useAppSelector } from '../../../hooks/useAppSelector'
 import { Avatar } from '../../Avatar'
@@ -65,6 +65,7 @@ export const TimetableCell: React.FC<Props> = memo(({ cell, setDataCell, setIsOp
                                 }
                             </div>
                         )) :
+                        moment() < cell &&
                         <div className='new_lesson'>
                             <span onClick={() => handleOpenPopupLesson(cell)}
                             >Новый урок

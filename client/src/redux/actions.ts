@@ -1,3 +1,4 @@
+import { academicPerformanceActions, academicPerformanceThunks } from './academicPerformance/actions'
 import { alertActions } from './alert/actions'
 import { authActions, authThunks } from './auth/actions'
 import { lessonActions, lessonThunks } from './lesson/actions'
@@ -13,5 +14,7 @@ export const allActions = {
     ...notifyActions,
     ...notifyThunks,
     ...lessonActions,
-    ...lessonThunks
+    ...lessonThunks,
+    ...academicPerformanceActions,
+    ...academicPerformanceThunks
 }

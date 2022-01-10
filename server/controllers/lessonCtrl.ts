@@ -18,7 +18,12 @@ export const lessonCtrl = {
                 })
                 await newLesson.save()
 
-                return res.json({ msg: 'Lesson created!' })
+                const lessons = await Lesson.find()
+
+                return res.json({
+                    msg: 'Lesson created!',
+                    addedLesson: lessons[lessons.length - 1]
+                })
             }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })
@@ -70,13 +75,10 @@ export const lessonCtrl = {
                     lessonStatus: status
                 })
                 if (!lesson) return res.status(400).json({ msg: 'Lesson undefined' })
-
+                const updtLesson = await Lesson.findById(id)
                 return res.json({
                     msg: 'Lesson status updated',
-                    newStatus: {
-                        ...lesson._doc,
-                        status
-                    }
+                    lesson: updtLesson
                 })
             }
         } catch (err: any) {

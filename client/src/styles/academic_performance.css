@@ -1,0 +1,128 @@
+.users_select-nav{
+    position: relative;
+    cursor: pointer;
+}
+.users_select-nav div:nth-child(1){
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 100px;
+}
+.users_select-nav div:nth-child(1) span{
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    padding-right: 4px;
+}
+.users_select-nav #arrow-nav{
+    transform: rotate(-90deg);
+}
+.users_select-nav #arrow-nav-active{
+    transform: rotate(90deg);
+}
+.users_select-nav .users_select-list-nav{
+    position: absolute;
+    top: 100%;
+    left: -30%;
+    width: max-content;
+    background: rgba(255, 255, 255, 0.864);
+    margin: 5px 40px 0 0;
+    border: 1px solid rgb(228, 228, 228);
+    border-radius: 3px;
+    max-height: 200px;
+    overflow: auto;
+}
+.users_select-nav .users_select-list-nav div{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 4px;
+}
+.users_select-nav .users_select-list-nav div:hover{
+    background: #F5E6FE;
+}
+.users_select-nav .users_select-list-nav div span{
+    padding-left: 3px;
+}
+.popup_block .adding_results {
+    padding: 13px;
+}
+.popup_block .adding_results input{
+    border: none;
+    background: rgba(252, 252, 252, 0.96);
+    padding: 3px;
+    margin-top: 2px;
+    border-radius: 3px;
+}
+.popup_block .adding_results div{
+    display: flex;
+    align-items: flex-end;
+}
+.popup_block .adding_results div div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+}
+.popup_block .adding_results div label{
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    align-items: center;
+    text-align: center;
+    justify-content: end;
+}
+.popup_block .adding_results div input{
+    max-width: 80px;
+}
+.popup_block .adding_results label{
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    margin: 0 0 20px 30px;
+}
+.popup_block .adding_results div label span{
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 550;
+}
+.popup_block .adding_results .lesson_name{
+    display: grid;
+    height: 100%;
+}
+.popup_block .adding_results .lesson_name label{
+    width: 100%;
+    margin-bottom: 50px;
+}
+.adding_results-button{
+    width: 80px;
+    padding: 2px;
+    margin: 10px 0 0 10px;
+}
+.basic_info .performance_content .academic_performance .performance_nav{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #F1FCFF;
+    color: #235390;
+    padding: 15px 7px;
+}
+.basic_info .performance_content .academic_performance .performance_nav div{
+    width: 60px;
+}
+.basic_info .performance_content .academic_performance .performances{
+    border: 2px solid rgb(233, 233, 233);
+}
+.basic_info .performance_content .academic_performance .performance{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border: 2px solid rgb(233, 233, 233);
+    padding: 10px;
+}
+.basic_info .performance_content .academic_performance .performance div{
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+

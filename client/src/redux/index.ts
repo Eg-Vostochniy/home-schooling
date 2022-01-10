@@ -1,3 +1,4 @@
+import { academicPerformanceReducer } from './academicPerformance/reducer';
 import { lessonReducer } from './lesson/reducer';
 import { notifyReducer } from './notify/reducer';
 import { userReducer } from './user/reducer'
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     alertReducer,
     userReducer,
     notifyReducer,
-    lessonReducer
+    lessonReducer,
+    academicPerformanceReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)))

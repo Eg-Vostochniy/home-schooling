@@ -43,13 +43,16 @@ export const userCtrl = {
 
                 const authUser = await Users.findOneAndUpdate({ _id: user._id }, {
                     $push: { roleUsers: req.body.id }
-                }, { new: true })
+                }, { new: true }).populate('roleUsers', 'username avatar fullname')
 
                 await Users.findOneAndUpdate({ _id: req.body.id }, {
                     $push: { roleUsers: user._id }
                 }, { new: true })
 
-                return res.json({msg: 'User added'})
+                return res.json({
+                    msg: 'User added',
+                    addedUser: authUser.roleUsers[authUser.roleUsers.length - 1]
+                })
             }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })
@@ -68,31 +71,8 @@ export const userCtrl = {
                 if (roleUser?.roleUsers.length === 0)
                     return res.status(400).json({ msg: 'User does not exist' })
 
-                await usrAuth?.update({ $pull: { roleUsers: id } })
-                await roleUser?.update({ $pull: { roleUsers: user._id } })
-
-                if (user.role === 'student') {
-                    await Lessons.deleteMany({
-                        teacher: (id as any),
-                        lessonType: 'user',
-                        lessonUser: { _id: user._id }
-                    })
-                    const less = await Lessons.find({ teacher: (id as any) })
-                    await less?.forEach(l => {
-                        l.update({ $pull: { groupUsers: id } })
-                    })
-                }
-                if (user.role === 'teacher') {
-                    await Lessons.deleteMany({
-                        teacher: user._id,
-                        lessonType: 'user',
-                        lessonUser: { _id: id }
-                    })
-                    const less = await Lessons.find({ teacher: user._id })
-                    await less?.forEach(l => {
-                        l.update({ $pull: { groupUsers: id } })
-                    })
-                }
+                await usrAuth?.updateOne({ $pull: { roleUsers: id } })
+                await roleUser?.updateOne({ $pull: { roleUsers: user._id } })
 
                 return res.json({ msg: 'User deleted' })
             }
@@ -111,7 +91,12 @@ export const userCtrl = {
                         $push: { groupAddedUsers: data }
                     })
                 })
-                return res.json({ msg: 'Group added' })
+                const authUser = await Users.findById(user._id)
+                if (!authUser) return res.status(400).json({ msg: 'Authentication error' })
+                return res.json({
+                    msg: 'Group added',
+                    addedGroup: authUser.groupAddedUsers[authUser.groupAddedUsers.length - 1]
+                })
             }
         } catch (err: any) {
             return res.status(500).json({ msg: err.message })

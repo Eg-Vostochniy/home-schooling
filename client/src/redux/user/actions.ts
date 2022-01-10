@@ -85,7 +85,7 @@ export const userThunks = {
             dispatch(authActions.auth({
                 ...auth, user: {
                     ...auth.user,
-                    roleUsers: [...auth.user.roleUsers, user]
+                    roleUsers: [...auth.user.roleUsers, res.data.addedUser]
                 }
             }))
         } catch (err: any) {
@@ -117,7 +117,7 @@ export const userThunks = {
                 ...auth,
                 user: {
                     ...auth.user,
-                    groupAddedUsers: [...auth.user.groupAddedUsers, group as IResGroup]
+                    groupAddedUsers: [...auth.user.groupAddedUsers, res.data.addedGroup]
                 }
             }))
         } catch (err: any) {
